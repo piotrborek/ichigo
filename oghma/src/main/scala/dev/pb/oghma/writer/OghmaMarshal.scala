@@ -5,7 +5,7 @@ import dev.pb.oghma.api.Marshal
 import dev.pb.oghma.common.{BufferUtils, OghmaTag}
 
 sealed trait OghmaMarshal[F[_]] extends Marshal[F]:
-  def marshalInt(value: Long): Stream[F, Byte] =
+  def marshalLong(value: Long): Stream[F, Byte] =
     value match
       case x if x >= -128 && x <= 127 => marshalInt8(x)
 

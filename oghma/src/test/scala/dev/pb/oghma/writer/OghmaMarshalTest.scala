@@ -1,12 +1,14 @@
 package dev.pb.oghma.writer
 
-import dev.pb.oghma.common.OghmaTag
-import fs2.Pure
+import fs2.{Pure, Stream}
 import munit.CatsEffectSuite
+import dev.pb.oghma.testdata.TestCaseLong
 
 class OghmaMarshalTest extends CatsEffectSuite:
-  test("Example test"):
-    val obtained = OghmaMarshal[Pure].marshalInt(0).toVector
-    val expected = Vector(OghmaTag.Int8.value, 0).map(_.toByte)
-
-    assertEquals(obtained, expected)
+  test("marshalLong() should return serialized data"):
+    for testCase <- TestCaseLong.cases do
+      val obtained =
+        OghmaMarshal[Pure]
+          .marshalLong(testCase.value)
+          .toVector
+      assertEquals(obtained, testCase.expected)
