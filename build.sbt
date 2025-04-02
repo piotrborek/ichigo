@@ -6,7 +6,7 @@ lazy val dependencies = new {
   val fs2_core = "co.fs2" %% "fs2-core" % "3.12.0"
   val fs2_io = "co.fs2" %% "fs2-io" % "3.12.0"
   val munit = "org.scalameta" %% "munit" % "1.1.0" % Test
-  val munit_cats_effect = "org.typelevel" %% "munit-cats-effect-3" % "1.0.7" % Test
+  val munit_cats_effect = "org.typelevel" %% "munit-cats-effect" % "2.1.0" % Test
 }
 
 lazy val root = (project in file("."))
