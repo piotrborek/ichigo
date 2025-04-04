@@ -2,16 +2,14 @@ package dev.pb.oghma.writer
 
 import fs2.Stream
 import dev.pb.oghma.api.Marshal
-import dev.pb.oghma.common.{BufferUtils, OghmaTag}
 
 sealed trait OghmaMarshal[F[_]] extends Marshal[F]:
   def marshalLong(value: Long): Stream[F, Byte] =
     value match
-      case x if x >= -128 && x <= 127 => marshalInt8(x)
-
-  private def marshalInt8(value: Long): Stream[F, Byte] =
-    val buffer = BufferUtils.bigEndianByteBuffer(OghmaTag.Int8.value, value.toByte)
-    BufferUtils.toStream(buffer)
+      case x if x >= -128 && x <= 127                 => MarshalInt.marshalInt8(x)
+      case x if x >= -32_768 && x <= 32_767           => MarshalInt.marshalInt16(x)
+      case x if x >= -2147483648L && x <= 2147483647L => MarshalInt.marshalInt32(x)
+      case x                                          => MarshalInt.marshalInt64(x)
 
 object OghmaMarshal:
   def apply[F[_]](using F: OghmaMarshal[F]): Marshal[F] = F

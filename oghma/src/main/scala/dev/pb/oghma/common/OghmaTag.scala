@@ -1,6 +1,6 @@
 package dev.pb.oghma.common
 
-enum OghmaTag(val value: Int):
+enum OghmaTag(private val value: Byte):
   case Int8 extends OghmaTag(0x08)
   case Int16 extends OghmaTag(0x10)
   case Int32 extends OghmaTag(0x20)
@@ -8,3 +8,6 @@ enum OghmaTag(val value: Int):
   case SmallLength extends OghmaTag(0xb0.toByte)
   case MediumLength extends OghmaTag(0xb1.toByte)
   case LargeLength extends OghmaTag(0xb2.toByte)
+
+  def toByte: Byte = value
+  def toInt: Int = value.toInt
