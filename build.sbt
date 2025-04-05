@@ -11,6 +11,10 @@ lazy val dependencies = new {
 
 lazy val root = (project in file("."))
   .aggregate(oghma)
+  .dependsOn(oghma)
+  .settings(
+    Compile / run / mainClass := Some("dev.pb.oghma.Main")
+  )
 
 lazy val oghma = project
   .in(file("oghma"))
