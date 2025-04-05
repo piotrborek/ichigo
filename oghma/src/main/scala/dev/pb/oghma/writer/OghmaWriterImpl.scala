@@ -21,3 +21,10 @@ trait OghmaWriterImpl extends OghmaWriter:
   def writeFloat64(value: Double): this.type =
     WriteFloat.writeFloat64(this, value)
     this
+
+  def writeBinary(value: Array[Byte]): this.type =
+    value match
+      case x if x.length <= 255    => WriteBinary.writeSmallBinary(this, value)
+      case x if x.length <= 65_535 => WriteBinary.writeMediumBinary(this, value)
+      case x                       => WriteBinary.writeLargeBinary(this, value)
+    this
