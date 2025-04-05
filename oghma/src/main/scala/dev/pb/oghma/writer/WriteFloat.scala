@@ -1,17 +1,16 @@
 package dev.pb.oghma.writer
 
-import dev.pb.oghma.api.ByteWriter
 import dev.pb.oghma.common.ByteBuffer
 
 private[writer] object WriteFloat:
-  def writeFloat32(writer: ByteWriter, value: Float): Unit =
+  def writeFloat32(value: Float) =
     ByteBuffer
       .allocBigEndian(4)
       .putFloat(value)
-      .collect(writer)
+      .complete
 
-  def writeFloat64(writer: ByteWriter, value: Double): Unit =
+  def writeFloat64(value: Double) =
     ByteBuffer
       .allocBigEndian(8)
       .putDouble(value)
-      .collect(writer)
+      .complete

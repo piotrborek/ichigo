@@ -1,6 +1,7 @@
 package dev.pb.oghma.writer
 
-import dev.pb.oghma.common.OghmaTag
+import dev.pb.oghma.api.ByteWriter
+import dev.pb.oghma.common.{ByteBuffer, OghmaTag}
 import munit.FunSuite
 import dev.pb.oghma.testdata.{TestCaseFloat, TestCaseLong}
 

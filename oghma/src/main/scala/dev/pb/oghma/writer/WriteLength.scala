@@ -1,27 +1,28 @@
 package dev.pb.oghma.writer
 
-import dev.pb.oghma.api.ByteWriter
 import dev.pb.oghma.common.{ByteBuffer, OghmaTag}
 
 private[writer] object WriteLength:
-  def writeSmallLength(writer: ByteWriter, length: Int): Unit =
+  def writeSmallLength(length: Int): ByteBuffer#Opts =
     require(length <= 255)
-    writer
-      .write(OghmaTag.SmallLength.toByte)
-      .write(length.toByte)
+    ByteBuffer
+      .allocBigEndian(2)
+      .putByte(OghmaTag.SmallLength.toByte)
+      .putByte(length.toByte)
+      .complete
 
-  def writeMediumLength(writer: ByteWriter, length: Int): Unit =
+  def writeMediumLength(length: Int): ByteBuffer#Opts =
     require(length >= 256 && length <= 65_535)
     ByteBuffer
       .allocBigEndian(3)
       .putByte(OghmaTag.MediumLength.toByte)
       .putShort(length.toShort)
-      .collect(writer)
+      .complete
 
-  def writeLargeLength(writer: ByteWriter, length: Int): Unit =
+  def writeLargeLength(length: Int): ByteBuffer#Opts =
     require(length >= 65_536)
     ByteBuffer
       .allocBigEndian(5)
       .putByte(OghmaTag.LargeLength.toByte)
       .putInt(length)
-      .collect(writer)
+      .complete

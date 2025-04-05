@@ -4,7 +4,16 @@ import dev.pb.oghma.api.ByteWriter
 
 import java.nio.ByteOrder
 
-trait ByteBuffer(buffer: java.nio.ByteBuffer):
+trait ByteBuffer(buffer: java.nio.ByteBuffer, acc: Vector[java.nio.ByteBuffer]):
+  trait Opts:
+    def allocBigEndian(capacity: Int): ByteBuffer =
+      val buffer = java.nio.ByteBuffer.allocate(capacity)
+      buffer.order(ByteOrder.BIG_ENDIAN)
+      new ByteBuffer(buffer, acc :+ buffer) {}
+
+    def collect(writer: ByteWriter): Unit =
+      for buffer <- acc do writer.write(buffer.array())
+
   def putByte(value: Byte): this.type =
     buffer.put(value)
     this
@@ -29,13 +38,14 @@ trait ByteBuffer(buffer: java.nio.ByteBuffer):
     buffer.putDouble(value)
     this
 
-  def collect(writer: ByteWriter): Unit =
-    writer.write(buffer.array())
+  def putBytes(value: Array[Byte]): this.type =
+    buffer.put(value)
+    this
+
+  def complete: this.Opts = new Opts {}
 
 object ByteBuffer:
-  private class ByteBufferImpl(buffer: java.nio.ByteBuffer) extends ByteBuffer(buffer)
-
   def allocBigEndian(capacity: Int): ByteBuffer =
     val buffer = java.nio.ByteBuffer.allocate(capacity)
     buffer.order(ByteOrder.BIG_ENDIAN)
-    ByteBufferImpl(buffer)
+    new ByteBuffer(buffer, Vector(buffer)) {}
