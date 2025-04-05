@@ -4,7 +4,7 @@ import dev.pb.oghma.api.ByteWriter
 
 import scala.collection.mutable
 
-class MemoryOghmaWriter extends OghmaWriterImpl with ByteWriter:
+sealed class MemoryOghmaWriter extends OghmaWriterImpl with ByteWriter:
   private val buffer = mutable.ArrayBuffer.empty[Byte]
 
   def write(b: Byte): this.type =
