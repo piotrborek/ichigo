@@ -2,6 +2,8 @@ package dev.pb.oghma.writer
 
 import dev.pb.oghma.api.{ByteWriter, OghmaWriter}
 
+import java.time.LocalDateTime
+
 trait OghmaWriterImpl extends OghmaWriter:
   this: ByteWriter =>
 
@@ -32,4 +34,8 @@ trait OghmaWriterImpl extends OghmaWriter:
         case x                       => WriteBinary.writeLargeBinary(x)
 
     buffer.collect(this)
+    this
+
+  def writeDateTime(value: LocalDateTime): this.type =
+    WriteDateTime.writeDateTime(value).collect(this)
     this

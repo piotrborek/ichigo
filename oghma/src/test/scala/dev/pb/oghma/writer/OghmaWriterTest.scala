@@ -5,6 +5,8 @@ import dev.pb.oghma.common.{ByteBuffer, OghmaTag}
 import munit.FunSuite
 import dev.pb.oghma.testdata.{TestCaseFloat, TestCaseLong}
 
+import java.time.LocalDateTime
+
 class OghmaWriterTest extends FunSuite:
   test("writeLong() should write data"):
     for testCase <- TestCaseLong.cases do
@@ -71,4 +73,23 @@ class OghmaWriterTest extends FunSuite:
       MemoryOghmaWriter()
         .writeBinary(bytes)
         .toVector
+    assertEquals(obtained, expected)
+
+  test("writeDateTime should write data - test 1"):
+    val dateTime = LocalDateTime.parse("2025-04-06T21:04:27.228705428")
+    val expected = Vector(0x20, 0x25, 0xf4, 0x06, 0x21, 0x04, 0x27, 0x22, 0x87, 0x05, 0x42, 0x8f).map(_.toByte)
+    val obtained =
+      MemoryOghmaWriter()
+        .writeDateTime(dateTime)
+        .toVector
+    assertEquals(obtained, expected)
+
+  test("writeDateTime should write data - test 1"):
+    val dateTime = LocalDateTime.parse("2025-04-06T21:04:27.22870542")
+    val expected = Vector(0x20, 0x25, 0xf4, 0x06, 0x21, 0x04, 0x27, 0x22, 0x87, 0x05, 0x42, 0xf0).map(_.toByte)
+    val obtained =
+      MemoryOghmaWriter()
+        .writeDateTime(dateTime)
+        .toVector
+
     assertEquals(obtained, expected)
