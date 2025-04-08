@@ -84,12 +84,11 @@ class OghmaWriterTest extends FunSuite:
         .toVector
     assertEquals(obtained, expected)
 
-  test("writeDateTime should write data - test 1"):
-    val dateTime = LocalDateTime.parse("2025-04-06T21:04:27.022870542")
-    val expected = Vector(0x20, 0x25, 0xf4, 0x06, 0x21, 0x04, 0x27, 0x22, 0x87, 0x05, 0x42, 0xf0).map(_.toByte)
+  test("writeDateTime should write data - test 2"):
+    val dateTime = LocalDateTime.parse("2025-04-06T21:04:27.028705420")
+    val expected = Vector(0x20, 0x25, 0xf4, 0x06, 0x21, 0x04, 0x27, 0x28, 0x70, 0x54, 0x20, 0xff).map(_.toByte)
     val obtained =
       MemoryOghmaWriter()
         .writeDateTime(dateTime)
         .toVector
-
     assertEquals(obtained, expected)
